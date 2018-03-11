@@ -2,6 +2,8 @@
 #define COMPUTORV_H
 
 #include <iostream>
+#include <string>
+#include "headers/polynomial.h"
 
 using namespace std;
 
