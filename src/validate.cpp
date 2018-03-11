@@ -1,9 +1,15 @@
 
 #include "../computorv.h"
 
-
 bool	isOperand(char ch) {
 	return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
+}
+
+void	skipToNext(char *equation) {
+	while (*equation != ' ' && *equation && !isOperand(*equation)) {
+			//cout << *equation << " ";
+			equation++;
+	}
 }
 
 bool	Validate::isTermValid(char *termVal, polynomial *equation) {
@@ -11,20 +17,26 @@ bool	Validate::isTermValid(char *termVal, polynomial *equation) {
 
 	termClass->setOperand(*termVal);
 	termVal++;
-	while (*termVal == ' ') {
+	while (*termVal == ' ' && *termVal) {
 		termVal++;
 	}
-	while (*termVal != ' ' || *termVal) {
+	while (*termVal != ' ' && *termVal) {
 		if (isdigit(*termVal)) {
-			termClass->setContant(atof(termVal));			
+			termClass->setContant(atof(termVal));
+			skipToNext(termVal);
+			termClass->toString();
 		} else if (isalpha(*termVal)) {
 			termClass->setVariable(*termVal);
+			skipToNext(termVal);
+			termClass->toString();
 		} else if (*termVal == '^') {
 			if (termVal[1] == '-') {
 				return (false);
 			}
 			termVal++;
 			termClass->setExponent((char)*termVal);
+			skipToNext(termVal);
+			termClass->toString();			
 		}
 		termVal++;
 	}
@@ -38,24 +50,19 @@ bool	Validate::isPolynomialValid(char *poly, polynomial *equation) {
 	cout << "Attempting to validate polynomial" << endl;
 	if (isdigit(*poly)) {
 		termValue->setContant(atof(poly));
-		cout << "Iterating throught the equation ";
-		while (*poly != ' ' && *poly && !isOperand(*poly)) {
-			cout << *poly << " ";
-			poly++;
-		}
-		cout << endl;
-		cout << "Char @ " << *poly << endl;
+		skipToNext(poly);
+		termValue->toString();
 	} else if (isalpha((int)*poly)) {
 		termValue->setVariable(*poly);
+		skipToNext(poly);
+		termValue->toString();
 	}
 	else {
 		return (false);
 	}
 	termValue->toString();
 	equation->addTerm(termValue);
-	cout << "Check debug : " << poly << endl;
 	while (*poly) {
-		cout << " " << *poly << " " << endl;
 		if (isOperand(*poly)) {
 			if (!Validate::isTermValid(poly, equation)) {
 				return (false);
