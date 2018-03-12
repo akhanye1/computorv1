@@ -8,10 +8,12 @@ using namespace std;
 class polynomial {
     private:
         vector<term>    terms;
-        static int      counter;
 
     public:
-        bool addTerm(term *Term);
+        bool            addTerm(term *Term);
+        void            toString(void);
+        static int      counter;
+        polynomial(void);
 };
 
 #endif

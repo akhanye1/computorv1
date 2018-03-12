@@ -7,7 +7,6 @@ bool	isOperand(char ch) {
 
 void	skipToNext(char *equation) {
 	while (*equation != ' ' && *equation && !isOperand(*equation)) {
-			//cout << *equation << " ";
 			equation++;
 	}
 }
@@ -23,12 +22,10 @@ bool	Validate::isTermValid(char *termVal, polynomial *equation) {
 	while (*termVal != ' ' && *termVal) {
 		if (isdigit(*termVal)) {
 			termClass->setContant(atof(termVal));
-			skipToNext(termVal);
-			termClass->toString();
+			skipToNext(termVal);			
 		} else if (isalpha(*termVal)) {
 			termClass->setVariable(*termVal);
 			skipToNext(termVal);
-			termClass->toString();
 		} else if (*termVal == '^') {
 			if (termVal[1] == '-') {
 				return (false);
@@ -46,21 +43,16 @@ bool	Validate::isTermValid(char *termVal, polynomial *equation) {
 
 bool	Validate::isPolynomialValid(char *poly, polynomial *equation) {
 	term *termValue = new term();
-
-	cout << "Attempting to validate polynomial" << endl;
 	if (isdigit(*poly)) {
 		termValue->setContant(atof(poly));
 		skipToNext(poly);
-		termValue->toString();
 	} else if (isalpha((int)*poly)) {
 		termValue->setVariable(*poly);
 		skipToNext(poly);
-		termValue->toString();
 	}
 	else {
 		return (false);
 	}
-	termValue->toString();
 	equation->addTerm(termValue);
 	while (*poly) {
 		if (isOperand(*poly)) {
@@ -74,5 +66,4 @@ bool	Validate::isPolynomialValid(char *poly, polynomial *equation) {
 }
 
 Validate::Validate(void) {
-
 }

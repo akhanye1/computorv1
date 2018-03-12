@@ -7,9 +7,9 @@ int		main(int ac, char **av) {
 		cout << "Usage: ./computor <polynimial>" << endl;
 		return (1);
 	}
-	if (Validate::isPolynomialValid(av[1], equation))
-		cout << "Is Valid\n";
-	else
-		cout << "Is not Valid\n";
+	if (!Validate::isPolynomialValid(av[1], equation)) {
+		cout << "Polynomial expression is incorrect" << endl;
+		return (1);
+	}
 	return (0);
 }
