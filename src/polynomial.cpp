@@ -3,8 +3,7 @@
 int polynomial::counter = 0;
 
 bool    polynomial::addTerm(term *termVal) {
-    //this->terms.insert(*termVal, 1);
-    this->terms.insert(*termVal, counter);
+    this->terms.push_back(*termVal);
     polynomial::counter++;
     if (termVal) {
         
@@ -13,7 +12,10 @@ bool    polynomial::addTerm(term *termVal) {
 }
 
 void        polynomial::toString(void) {
-
+    int x = 0;
+    for (x = 0; x < polynomial::counter; x++) {
+        
+    }
 }
 
 polynomial::polynomial(void) {
