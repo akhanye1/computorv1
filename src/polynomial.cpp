@@ -13,8 +13,11 @@ bool    polynomial::addTerm(term *termVal) {
 
 void        polynomial::toString(void) {
     int x = 0;
+    term oneTerm;
+
     for (x = 0; x < polynomial::counter; x++) {
-        
+        oneTerm = this->terms.at(x);
+        oneTerm.toString();
     }
 }
 

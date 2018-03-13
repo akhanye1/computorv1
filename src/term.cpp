@@ -49,10 +49,13 @@ bool    term::isExp() {
 
 void    term::toString() {
     if (this->isConst()) {
-        cout << "Term has const with value " << this->constant << endl;
-    } else if (this->isVar()) {
-        cout << "Term has variable with variable " << this->variable << endl;
-    } else { 
-        cout << "Term is not yet fully operational" << endl;
+        cout << "Term has const with value " << this->constant << " ";
     }
+    if (this->isVar()) {
+        cout << "Term has variable with variable " << this->variable << " ";
+    }
+    if (this->isExp()) { 
+        cout << "Term has exponent " << this->exponent;
+    }
+    cout << endl;
 }

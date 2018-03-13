@@ -5,10 +5,16 @@ bool	isOperand(char ch) {
 	return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
 }
 
-void	skipToNext(char *equation) {
-	while (*equation != ' ' && *equation && !isOperand(*equation)) {
+char	*skipToNext(char *equation) {
+	if (isOperand(*equation)) {
+		equation++;
+	}
+	while (*equation != ' ' && *equation && !isOperand(*equation) &&
+		*equation != '^') {
 			equation++;
 	}
+	cout << "Skipped to char @ " << *equation << endl;
+	return (equation);
 }
 
 bool	Validate::isTermValid(char *termVal, polynomial *equation) {
@@ -16,26 +22,30 @@ bool	Validate::isTermValid(char *termVal, polynomial *equation) {
 
 	termClass->setOperand(*termVal);
 	termVal++;
+	if (!*termVal) {
+		return (true);
+	}
 	while (*termVal == ' ' && *termVal) {
 		termVal++;
 	}
-	while (*termVal != ' ' && *termVal) {
+	while (*termVal != ' ' && *termVal && !isOperand(*termVal)) {
 		if (isdigit(*termVal)) {
 			termClass->setContant(atof(termVal));
-			skipToNext(termVal);			
+			termVal = skipToNext(termVal);
 		} else if (isalpha(*termVal)) {
 			termClass->setVariable(*termVal);
-			skipToNext(termVal);
+			termVal = skipToNext(termVal);
 		} else if (*termVal == '^') {
 			if (termVal[1] == '-') {
 				return (false);
 			}
 			termVal++;
 			termClass->setExponent((char)*termVal);
-			skipToNext(termVal);
-			termClass->toString();			
+			termVal = skipToNext(termVal);		
 		}
-		termVal++;
+		if (*termVal != '^') {
+			termVal++;
+		}
 	}
 	equation->addTerm(termClass);
 	return (true);
@@ -59,8 +69,11 @@ bool	Validate::isPolynomialValid(char *poly, polynomial *equation) {
 			if (!Validate::isTermValid(poly, equation)) {
 				return (false);
 			}
+			poly = skipToNext(poly);
 		}
-		poly++;
+		if (!isOperand(*poly)) {
+			poly++;
+		}
 	}
 	return (true);
 }

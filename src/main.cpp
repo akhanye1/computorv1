@@ -11,5 +11,6 @@ int		main(int ac, char **av) {
 		cout << "Polynomial expression is incorrect" << endl;
 		return (1);
 	}
+	equation->toString();
 	return (0);
 }
