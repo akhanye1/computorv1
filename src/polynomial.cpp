@@ -11,6 +11,10 @@ bool    polynomial::addTerm(term *termVal) {
     return (true);
 }
 
+term        polynomial::getTerm(int index) {
+    return (this->terms.at(index));
+}
+
 void        polynomial::toString(void) {
     int x = 0;
     term oneTerm;

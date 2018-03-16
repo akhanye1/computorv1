@@ -1,10 +1,16 @@
 #include "../computorv.h"
 
+term::term(int termSide) {
+    this->isConstant = false;
+    this->isVariable = false;
+    this->isExponent = false;
+    this->termSide = termSide;
+}
+
 term::term(void) {
     this->isConstant = false;
     this->isVariable = false;
     this->isExponent = false;
-    //term::count = 0;
     this->termSide = 0;
 }
 
@@ -20,7 +26,7 @@ bool    term::setVariable(char variable) {
     return (true);
 }
 
-bool    term::setExponent(char exponent) {
+bool    term::setExponent(int exponent) {
     this->exponent = exponent;
     this->isExponent = true;
     return (true);
@@ -47,7 +53,16 @@ bool    term::isExp() {
     return (this->isExponent);
 }
 
+int     term::getExponent() {
+    return (this->exponent);
+}
+
+int     term::getSide() {
+    return (this->termSide);
+}
+
 void    term::toString() {
+    cout << "Signage " << this->operand << " ";
     if (this->isConst()) {
         cout << "Term has const with value " << this->constant << " ";
     }
@@ -55,7 +70,12 @@ void    term::toString() {
         cout << "Term has variable with variable " << this->variable << " ";
     }
     if (this->isExp()) { 
-        cout << "Term has exponent " << this->exponent;
+        cout << "Term has exponent " << this->exponent << " ";
+    }
+    if (this->termSide == 0) {
+        cout << "Left hand side";
+    } else {
+        cout << "Right hand side";
     }
     cout << endl;
 }

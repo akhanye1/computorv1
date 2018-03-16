@@ -12,6 +12,7 @@ class polynomial {
     public:
         bool            addTerm(term *Term);
         void            toString(void);
+        term            getTerm(int index);
         static int      counter;
         polynomial(void);
 };
