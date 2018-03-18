@@ -13,7 +13,9 @@ class polynomial {
         bool            addTerm(term *Term);
         void            toString(void);
         term            getTerm(int index);
+        void            moveLeft(term tempTerm, int changeIndex, int removeIndex);
         static int      counter;
+        void            showReduced();
         polynomial(void);
 };
 

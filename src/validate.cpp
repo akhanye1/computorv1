@@ -18,11 +18,15 @@ char	*skipToNext(char *equation) {
 
 bool	Validate::isTermValid(char *termVal, polynomial *equation, int *termSide) {
 	term *termClass = new term(*termSide);
+	//cout << "Side of value " << *termSide << endl;
 	if (isOperand(*termVal)) {
 		termClass->setOperand(*termVal);
 		termVal++;
 	} else  {
 		termClass->setOperand('+');
+	}
+	if (*termVal == '=') {
+		termVal++;
 	}
 	if (!*termVal) {
 		return (true);
@@ -56,9 +60,6 @@ bool	Validate::isTermValid(char *termVal, polynomial *equation, int *termSide) {
 			if (*termSide > 1 || !*termVal) {
 				return (false);
 			}
-			equation->addTerm(termClass);
-			termVal++;
-			return (Validate::isTermValid(termVal, equation, termSide));
 		}
 	}
 	equation->addTerm(termClass);
@@ -73,13 +74,13 @@ bool	Validate::isPolynomialValid(char *poly, polynomial *equation) {
 	}
 	poly = skipToNext(poly);
 	while (*poly) {
-		if (isOperand(*poly)) {
+		if (isOperand(*poly) || *poly == '=') {
 			if (!Validate::isTermValid(poly, equation, &termSide)) {
 				return (false);
 			}
 			poly = skipToNext(poly);
 		}
-		if (!isOperand(*poly)) {
+		if (!isOperand(*poly) || *poly != '=') {
 			poly++;
 		}
 	}
