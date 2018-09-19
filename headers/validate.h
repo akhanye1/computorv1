@@ -4,9 +4,13 @@
 #include "../computorv.h"
 
 class	Validate {
+    private:
+        void            splitString(char *poly);
+        vector<string>  tempStrings;
+
 	public:
-		static bool	isPolynomialValid(char *poly, polynomial *equation);
-        static bool isTermValid(char *term, polynomial *equation, int *termValid);
+		bool	isPolynomialValid(char *poly, polynomial *equation);
+        bool isTermValid(char *term, polynomial *equation, int *termValid);
         Validate(void);
 };
 

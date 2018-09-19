@@ -11,7 +11,6 @@ class term {
         bool        isExponent;
         char        order;
         char        operand;
-        //static int  count;
         char        termSide;
 
     public:
@@ -20,6 +19,7 @@ class term {
         bool    setVariable(char variable);
         bool    setExponent(int exponent);
         void    addExponent(int leftExponent, int rightExponent);
+        void    addVariable(term rightVariable, term leftVariable);
         bool    setOperand(char operand);
         void    setSide(int side);
         void    replaceTerm(term tempTerm);

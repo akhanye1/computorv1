@@ -14,6 +14,7 @@ class polynomial {
         void            toString(void);
         term            getTerm(int index);
         void            moveLeft(term tempTerm, int changeIndex, int removeIndex);
+        void            changeSide(term tempTerm, int index);
         static int      counter;
         void            showReduced();
         polynomial(void);

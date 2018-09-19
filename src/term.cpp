@@ -18,7 +18,8 @@ void    term::replaceTerm(term tempTerm) {
     this->constant = tempTerm.getConstant();
     this->variable = tempTerm.getVariable();
     this->exponent = tempTerm.getExponent();
-    this->operand = (tempTerm.getConstant() > 0) ? '+' : '-';
+    this->operand = tempTerm.getOperand();
+    this->termSide = tempTerm.getSide();
     this->isConstant = tempTerm.isConst();
     this->isVariable = tempTerm.isVar();
     this->isExponent = tempTerm.isExp();
@@ -35,15 +36,22 @@ float   getRealValue(term tempTerm) {
 }
 
 void    term::addConstant(term rightConstant, term leftConstant) {
-    //float   tempValue;
-    //rightConstant *= -1;
-    //cout << "Signage of rightConstant " << rightConstant.getOperand() << endl;
     if (rightConstant.getOperand() == '+' || rightConstant.getOperand() == '-') {
-        //cout << "Real value of right : " << getRealValue(rightConstant) << endl;
         this->constant = (-1 * getRealValue(rightConstant)) + getRealValue(leftConstant);
         this->operand = (this->constant > 0) ? '+' : '-';
         this->constant = (this->constant > 0) ? this->constant : (-1 * this->constant);
     }
+}
+
+void    term::addVariable(term rightVariable, term leftVariable) {
+    if (!rightVariable.isConst()) {
+        rightVariable.setContant(0);
+    }
+    if (!leftVariable.isConst()) {
+        leftVariable.setContant(0);
+    }
+    this->addConstant(rightVariable, leftVariable);
+    //rightVal = (rightVariable.isConst()) ? rightVariable.getConstant() : 0;
 }
 
 bool    term::setVariable(char variable) {

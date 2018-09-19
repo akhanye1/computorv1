@@ -6,26 +6,31 @@ bool	setValue(polynomial *equation, term oneTerm, int index) {
 	term	tempTerm;
 
 	i = -1;
-	if (index > 0) {
-
-	}
 	while (++i < equation->counter) {
 		tempTerm = equation->getTerm(i);
 		if (tempTerm.getSide() > 0) {
-			//cout << "side greater than zero";
-			return (false);
+			equation->changeSide(oneTerm, index);
+			break;
 		}
-		if (oneTerm.isConst() && tempTerm.isConst()) {
-			cout << "Adding with value " << tempTerm.getConstant() << endl;
+		if (oneTerm.isConst() && tempTerm.isConst() &&
+		!oneTerm.isVar() && !tempTerm.isVar() &&
+		(oneTerm.getOperand() == '+' || oneTerm.getOperand() == '-') &&
+		(tempTerm.getOperand() == '+' || tempTerm.getOperand() == '-')) {
+			cout << "Term found " << oneTerm.getConstant() << endl;
 			tempTerm.addConstant(oneTerm, tempTerm);
-			//cout << "After adding value " << tempTerm.getConstant() << endl;
 			equation->moveLeft(tempTerm, i, index);
 			break ;
-		} else if (oneTerm.isVar() && tempTerm.isVar()) {
-			if (oneTerm.getVariable() == tempTerm.getVariable()) {
-
+		} /*else if (oneTerm.isVar() && tempTerm.isVar()) {
+			if ((oneTerm.getVariable() == tempTerm.getVariable()) &&
+			(oneTerm.getExponent() == tempTerm.getExponent()) &&
+			(oneTerm.getOperand() == '+' || oneTerm.getOperand() == '-') &&
+			(tempTerm.getOperand() == '+' || tempTerm.getOperand() == '-')) {
+				tempTerm.addVariable(oneTerm, tempTerm);
+				equation->moveLeft(tempTerm, i, index);
+				//equation->move:
+				break ;
 			}
-		}
+		}*/
 	}
 	return (true);
 }
@@ -40,6 +45,7 @@ bool	reducedOk(polynomial *equation) {
 		oneTerm = equation->getTerm(index);
 		if (oneTerm.getSide() > 0) {
 			setValue(equation, oneTerm, index);
+			index = -1;
 		}
 	}
 	maxRight = 0;
@@ -50,6 +56,7 @@ bool	reducedOk(polynomial *equation) {
 		}
 	}
 	if (maxRight > 0) {
+		cout << "Max Right is more that 0 >> " << maxRight << endl;
 		return (false);
 	}
 	equation->showReduced();
@@ -77,23 +84,26 @@ int		polynomialDegree(polynomial *equation) {
 
 int		main(int ac, char **av) {
 	polynomial	*equation = new polynomial();
+	Validate validation;
 	if (ac != 2) {
 		cout << "Usage: ./computor <polynimial>" << endl;
 		return (1);
 	}
-	if (!Validate::isPolynomialValid(av[1], equation)) {
+	if (!validation.isPolynomialValid(av[1], equation)) {
 		cout << "Polynomial expression is incorrect" << endl;
 		return (1);
 	}
-	if (!reducedOk(equation)) {
-		cout << "Error reducing polynomial";
-		return (1);
+	else {
+		cout << "Polynomial expression is correct" << endl;
 	}
-	cout << "Polynomial degree is " << polynomialDegree(equation) << endl;
-	if (polynomialDegree(equation) > 2) {
-		cout << "The Polynomial degree is stricly greater than 2, I can't solve." << endl;
-		return (1);
-	}
-	//equation->toString();
+	// if (!reducedOk(equation)) {
+	// 	cout << "Error reducing polynomial";
+	// 	return (1);
+	// }
+	// cout << "Polynomial degree is " << polynomialDegree(equation) << endl;
+	// if (polynomialDegree(equation) > 2) {
+	// 	cout << "The Polynomial degree is stricly greater than 2, I can't solve." << endl;
+	// 	return (1);1
+	// }
 	return (0);
 }
