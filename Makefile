@@ -23,3 +23,5 @@ fclean:
 	@echo "Force Clean"
 
 re: fclean all
+
+.PHONY: re

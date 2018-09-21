@@ -14,6 +14,94 @@ term::term(void) {
     this->termSide = 0;
 }
 
+bool    alphaFound(string str) {
+    int index = -1;
+
+    while (++index < (int)str.length()) {
+        if (isalpha(str[index]) || str[index] == '^') {
+            return (true);
+        }
+    }
+    return (false);
+}
+
+int     returnAlphaIndex(string str) {
+    int index = -1;
+
+    while (++index < (int)str.length()) {
+        if (isalpha(str[index]) || str[index] == '^') {
+            return (index);
+        }
+    }
+    return (0);
+}
+
+bool    numberFound(string str) {
+    int index = -1;
+
+    while (++index < (int)str.length()) {
+        if (isdigit(str[index]) || str[index] == '^') {
+            return (true);
+        }
+    }
+    return (false);
+}
+
+// int     returnNumberIndex(string str) {
+//     int index = -1;
+
+//     while (++index < (int)str.length()) {
+//         if (isdigit(str[index]) || str[index] == '^') {
+//             return (index);
+//         }
+//     }
+//     return (0);
+// }
+
+void    term::fillTerm(string str) {
+    string tempString;
+
+    if (isdigit(str[0])) {
+        if (alphaFound(str)) {
+            tempString = str.substr(0, returnAlphaIndex(str));
+            this->constant = atof(tempString.c_str());
+            this->isConstant = true;
+            return (fillTerm(str.substr(returnAlphaIndex(str))));
+        }
+        else {
+            this->constant = atof(str.c_str());
+            this->isConstant = true;
+        }
+    }
+    else if (isalpha(str[0])) {
+        if (numberFound(str)) {
+            this->variable = str[0];
+            this->isVariable = true;
+            return (fillTerm(str.substr(1)));
+        }
+        else {
+            this->variable = str[0];
+            this->isVariable = true;
+        }
+    }
+    else if (str[0] == '^') {
+        if (str[1]) {
+            tempString = str.substr(1);
+            this->exponent = atoi(tempString.c_str());
+            this->isExponent = true;
+        }
+    }
+}
+
+term::term(string str, char operand, int termSide) {
+    this->isConstant = false;
+    this->isVariable = false;
+    this->isExponent = false;
+    this->termSide = termSide;
+    this->operand = operand;
+    fillTerm(str);
+}
+
 void    term::replaceTerm(term tempTerm) {
     this->constant = tempTerm.getConstant();
     this->variable = tempTerm.getVariable();

@@ -1,6 +1,10 @@
 #ifndef TERM_H
 #define TERM_H
 
+#include "../computorv.h"
+
+using namespace std;
+
 class term {
     private:
         float       constant;
@@ -12,8 +16,12 @@ class term {
         char        order;
         char        operand;
         char        termSide;
+        void        fillTerm(string str);
 
     public:
+        term(int termSide);
+        term(string str, char operand, int termSide);
+        term(void);
         bool    setContant(float constant);
         void    addConstant(term leftConstant, term rightConstant);
         bool    setVariable(char variable);
@@ -32,8 +40,6 @@ class term {
         float   getConstant();
         char    getVariable();
         char    getOperand();
-        term(int termSide);
-        term(void);
 };
 
 #endif
