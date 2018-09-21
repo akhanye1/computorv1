@@ -47,17 +47,6 @@ bool    numberFound(string str) {
     return (false);
 }
 
-// int     returnNumberIndex(string str) {
-//     int index = -1;
-
-//     while (++index < (int)str.length()) {
-//         if (isdigit(str[index]) || str[index] == '^') {
-//             return (index);
-//         }
-//     }
-//     return (0);
-// }
-
 void    term::fillTerm(string str) {
     string tempString;
 
