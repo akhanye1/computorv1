@@ -6,31 +6,24 @@ bool	setValue(polynomial *equation, term oneTerm, int index) {
 	term	tempTerm;
 
 	i = -1;
+	cout << "Looking for ";
+	oneTerm.toString();
 	while (++i < equation->counter) {
 		tempTerm = equation->getTerm(i);
 		if (tempTerm.getSide() > 0) {
 			equation->changeSide(oneTerm, index);
 			break;
 		}
-		// if (oneTerm.isConst() && tempTerm.isConst() &&
-		// !oneTerm.isVar() && !tempTerm.isVar() &&
-		// (oneTerm.getOperand() == '+' || oneTerm.getOperand() == '-') &&
-		// (tempTeerm.getOperand() == '+' || tempTerm.getOperand() == '-')) {
-		// 	cout << "Term found " << oneTerm.getConstant() << endl;
-		// 	tempTerm.addConstant(oneTerm, tempTerm);
-		// 	equation->moveLeft(tempTerm, i, index);
-		// 	break ;
-		// } else if (oneTerm.isVar() && tempTerm.isVar()) {
-		// 	if ((oneTerm.getVariable() == tempTerm.getVariable()) &&
-		// 	(oneTerm.getExponent() == tempTerm.getExponent()) &&
-		// 	(oneTerm.getOperand() == '+' || oneTerm.getOperand() == '-') &&
-		// 	(tempTerm.getOperand() == '+' || tempTerm.getOperand() == '-')) {
-		// 		tempTerm.addVariable(oneTerm, tempTerm);
-		// 		equation->moveLeft(tempTerm, i, index);
-		// 		equation->move:
-		// 		break ;
-		// 	}
-		// }
+		if (tempTerm.sameAs(oneTerm)) {
+			// tempTerm.addTerm(oneTerm);
+			cout << "BEFORE SENDING LEFT" << endl;
+			equation->showAll();
+			tempTerm.swapTerm(oneTerm);
+			equation->moveLeft(tempTerm, i, index);
+			cout << "AFTER SENDING LEFT" << endl;
+			equation->showAll();
+			break ;
+		}
 	}
 	return (true);
 }
@@ -40,6 +33,12 @@ bool	reducedOk(polynomial *equation) {
 	term	oneTerm;
 	int		maxRight;
 
+	index = -1;
+	//Simpify Right
+	equation->simplifyRight();
+	while (++index < equation->counter) {
+		equation->getTerm(index).toString();
+	}
 	index = -1;
 	while (++index < equation->counter) {
 		oneTerm = equation->getTerm(index);
@@ -59,7 +58,9 @@ bool	reducedOk(polynomial *equation) {
 		cout << "Max Right is more that 0 >> " << maxRight << endl;
 		return (false);
 	}
+	equation->solveExponents(0);
 	equation->showReduced();
+	equation->bodmasRule(0);
 	return (true);
 }
 

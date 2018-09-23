@@ -106,7 +106,18 @@ void    term::replaceTerm(term tempTerm) {
     this->isExponent = tempTerm.isExp();
 }
 
-bool    term::setContant(float constant) {    
+void    term::matchTerm(term rhs) {
+    if (rhs.isVar()) {
+        this->isVariable = true;
+        this->variable = rhs.getVariable();
+    }
+    if (rhs.isExp()) {
+        this->isExponent = true;
+        this->exponent = rhs.getExponent();
+    }
+}
+
+bool    term::setConstant(float constant) {    
     this->constant = constant;
     this->isConstant = true;
     return (true);
@@ -114,6 +125,10 @@ bool    term::setContant(float constant) {
 
 float   getRealValue(term tempTerm) {
     return (tempTerm.getOperand() == '-') ? (-1 * tempTerm.getConstant()) : tempTerm.getConstant();
+}
+
+float   getRightValueConstant(term rightValue) {
+    return (-1 * rightValue.getConstant());
 }
 
 void    term::addConstant(term rightConstant, term leftConstant) {
@@ -126,13 +141,12 @@ void    term::addConstant(term rightConstant, term leftConstant) {
 
 void    term::addVariable(term rightVariable, term leftVariable) {
     if (!rightVariable.isConst()) {
-        rightVariable.setContant(0);
+        rightVariable.setConstant(0);
     }
     if (!leftVariable.isConst()) {
-        leftVariable.setContant(0);
+        leftVariable.setConstant(0);
     }
     this->addConstant(rightVariable, leftVariable);
-    //rightVal = (rightVariable.isConst()) ? rightVariable.getConstant() : 0;
 }
 
 bool    term::setVariable(char variable) {
@@ -210,3 +224,67 @@ char    term::getVariable() {
 char    term::getOperand() {
     return (this->operand);
 }
+
+bool    term::sameAs(term compareTerm) {
+    if (this->isVar() == compareTerm.isVar() &&
+        this->isExp() == compareTerm.isExp()) {
+        if (this->isExponent) {
+            if (this->exponent != compareTerm.getExponent()) {
+                return (false);
+            }
+        }
+        if (compareTerm.getOperand() == '+' || compareTerm.getOperand() == '-' ) {
+            return (this->operand == '+' || this->operand == '-');
+        }
+        else {
+            return (this->operand == '*' || this->operand == '/');
+        }
+    }
+    return (false);
+}
+
+bool    term::addTerm(term addTerm) {
+    float temp1, temp2, tempSum;
+
+    temp1 = this->constant;
+    temp2 = addTerm.getConstant();
+    if (addTerm.getOperand() == '+' || addTerm.getOperand() == '-') {
+        if (this->sameAs(addTerm)) {
+            tempSum = temp1 + temp2;
+            this->setConstant(tempSum);
+            return (true);
+        }
+    }
+    else {
+        tempSum = (addTerm.getOperand() == '*') ? temp1 * temp2 : temp1 / temp2;
+        this->setConstant(tempSum);
+        matchTerm(addTerm);
+        return (true);
+    }
+    return (false);
+}
+
+void    term::removeVariable() {
+    this->isVariable = false;
+    this->isExponent = false;
+}
+
+void    term::swapTerm(term addTerm) {
+    float   temp1, temp2, tempSum;
+    char    constant;
+
+    temp1 = this->constant;
+    temp2 = getRightValueConstant(addTerm);
+    if (addTerm.getOperand() == '+' || addTerm.getOperand() == '-') {
+        if (this->sameAs(addTerm)) {
+            tempSum = temp1 + temp2;
+        }
+    }
+    else {
+        constant = (addTerm.getConstant() == '*') ? '/' : '*';
+        tempSum = (constant == '*') ? temp1 * temp2 : temp1 / temp2;
+    }
+    this->setConstant(tempSum);
+}
+
+

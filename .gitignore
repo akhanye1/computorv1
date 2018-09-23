@@ -1,3 +1,4 @@
 computor.exe
 .vscode/
 .vscode/*
+*.stackdump

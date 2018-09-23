@@ -242,7 +242,7 @@ void	Validate::addexpression(polynomial *equation) {
 	int	termSide = 0;
 
 	if (correctStrings[0][0] == '+' || correctStrings[0][0] == '-') {	
-		term *termClass = new term(correctStrings[1], correctStrings[0][0], termSide);	
+		term *termClass = new term(correctStrings[1], correctStrings[0][0], termSide);
 		equation->addTerm(termClass);
 		index = 2;
 		// termClass->toString();

@@ -8,8 +8,10 @@ using namespace std;
 class polynomial {
     private:
         vector<term>    terms;
+        void            solveByOrder(int start, char check);
 
     public:
+        polynomial(void);
         bool            addTerm(term *Term);
         void            toString(void);
         term            getTerm(int index);
@@ -17,7 +19,10 @@ class polynomial {
         void            changeSide(term tempTerm, int index);
         static int      counter;
         void            showReduced();
-        polynomial(void);
+        void            simplifyRight();
+        void            showAll();
+        void            bodmasRule(int start);
+        void            solveExponents(int start);
 };
 
 #endif

@@ -50,14 +50,15 @@ void        polynomial::showReduced(void) {
             cout << this->terms.at(x).getOperand() << " ";
         }
         if (this->terms.at(x).isConst()) {
-            if (this->terms.at(x).getConstant() == 1 && this->terms.at(x).isVar()) {
+            if ((this->terms.at(x).getConstant() == 1 && this->terms.at(x).isVar()) ||
+                (this->terms.at(x).getConstant() == 0 && this->terms.at(x).isVar())) {
 
             }
             else {
                 cout << this->terms.at(x).getConstant();
             }
         }
-        if (this->terms.at(x).isVar()) {
+        if (this->terms.at(x).isVar() && this->terms.at(x).getConstant() != 0) {
             cout << this->terms.at(x).getVariable();
         } 
         if (this->terms.at(x).isExp()) {
@@ -70,4 +71,103 @@ void        polynomial::showReduced(void) {
 
 polynomial::polynomial(void) {
     polynomial::counter = 0;
+}
+
+void    polynomial::simplifyRight() {
+    int     index = -1;
+
+    while (++index < counter && this->terms.at(index).getSide() == 0);
+    if (index == counter) {
+        return;
+    }
+    bodmasRule(index);
+}
+
+float   power(float number, int exponent) {
+    float sum;
+
+    sum = number;
+    while (--exponent > 0) {
+        sum = sum * number;
+    }
+    return (sum);
+}
+
+void    polynomial::solveExponents(int start) {
+    int     tempNumber;
+    float   number;
+    int     exponent;
+
+    while (start < counter) {
+        if (this->terms.at(start).getConstant() == 0 && this->terms.at(start).isVar()) {
+            this->terms.erase(this->terms.begin() + start);
+            counter--;
+            return (solveExponents(start));
+        }
+        if (this->terms.at(start).isExp()) {
+            if (this->terms.at(start).isVar() && this->terms.at(start).getExponent() == 0) {
+                this->terms.at(start).removeVariable();
+                tempNumber = this->terms.at(start).getConstant() * 1;
+                this->terms.at(start).setConstant(tempNumber);
+            }
+            else if (!this->terms.at(start).isVar()) {
+                number = this->terms.at(start).getConstant();
+                exponent = this->terms.at(start).getExponent();
+                tempNumber = power(number, exponent);
+                this->terms.at(start).removeVariable();
+                this->terms.at(start).setConstant(tempNumber);
+            }
+        }
+        start++;
+    }
+}
+
+// NB NB NB NBget the last instance of a variable
+void    polynomial::solveByOrder(int start, char check) {
+    // cout << "start : " << start << " end : " << counter << endl;
+    if (start >= counter) {
+        return ;
+    }
+    // cout << "Left hand side : ";
+    // this->terms.at(start - 1).toString();
+    // cout << "Right hand side : ";
+    // this->terms.at(start).toString();
+    while (start < counter) {
+        if (this->terms.at(start).getOperand() == check) {
+            if (this->terms.at(start - 1).addTerm(this->terms.at(start))) {
+                moveLeft(this->terms.at(start - 1), start - 1, start);
+                return (solveByOrder(start, check));
+            }
+        }
+        start++;
+    }
+}
+
+void    polynomial::bodmasRule(int start) {
+    showAll();
+    solveExponents(start);
+    cout << "debug 1: " << endl;
+    showAll();
+    solveByOrder(start + 1, '/');
+    cout << "debug 2: " << endl;
+    showAll();
+    solveByOrder(start + 1, '*');
+    cout << "debug 3: " << endl;
+    showAll();
+    solveByOrder(start + 1, '+');
+    cout << "debug 4: " << endl;
+    showAll();
+    solveByOrder(start + 1, '-');
+    cout << "Solved right hand side" << endl;
+    showAll();
+}
+
+void    polynomial::showAll() {
+    int index = -1;
+
+    cout << "START START START" << endl;
+    while (++index < counter) {
+        this->getTerm(index).toString();
+    }
+    cout << "END END END" << endl;
 }

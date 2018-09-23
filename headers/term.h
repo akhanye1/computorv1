@@ -22,7 +22,7 @@ class term {
         term(int termSide);
         term(string str, char operand, int termSide);
         term(void);
-        bool    setContant(float constant);
+        bool    setConstant(float constant);
         void    addConstant(term leftConstant, term rightConstant);
         bool    setVariable(char variable);
         bool    setExponent(int exponent);
@@ -40,6 +40,11 @@ class term {
         float   getConstant();
         char    getVariable();
         char    getOperand();
+        bool    sameAs(term compareTerm);
+        bool    addTerm(term addTerm);
+        void    removeVariable();
+        void    swapTerm(term rightTerm);
+        void    matchTerm(term rhs);
 };
 
 #endif
