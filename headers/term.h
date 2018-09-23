@@ -15,7 +15,7 @@ class term {
         bool        isExponent;
         char        order;
         char        operand;
-        char        termSide;
+        int         termSide;
         void        fillTerm(string str);
 
     public:

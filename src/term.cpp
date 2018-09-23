@@ -210,7 +210,7 @@ void    term::toString() {
     } else {
         cout << "Right hand side";
     }
-    cout << endl;
+    cout << " Side : (" << this->termSide << ") " << endl;
 }
 
 float   term::getConstant() {
@@ -286,5 +286,4 @@ void    term::swapTerm(term addTerm) {
     }
     this->setConstant(tempSum);
 }
-
 

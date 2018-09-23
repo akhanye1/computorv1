@@ -6,8 +6,6 @@ bool	setValue(polynomial *equation, term oneTerm, int index) {
 	term	tempTerm;
 
 	i = -1;
-	cout << "Looking for ";
-	oneTerm.toString();
 	while (++i < equation->counter) {
 		tempTerm = equation->getTerm(i);
 		if (tempTerm.getSide() > 0) {
@@ -15,13 +13,8 @@ bool	setValue(polynomial *equation, term oneTerm, int index) {
 			break;
 		}
 		if (tempTerm.sameAs(oneTerm)) {
-			// tempTerm.addTerm(oneTerm);
-			cout << "BEFORE SENDING LEFT" << endl;
-			equation->showAll();
 			tempTerm.swapTerm(oneTerm);
 			equation->moveLeft(tempTerm, i, index);
-			cout << "AFTER SENDING LEFT" << endl;
-			equation->showAll();
 			break ;
 		}
 	}
@@ -34,11 +27,10 @@ bool	reducedOk(polynomial *equation) {
 	int		maxRight;
 
 	index = -1;
-	//Simpify Right
 	equation->simplifyRight();
-	while (++index < equation->counter) {
-		equation->getTerm(index).toString();
-	}
+	// while (++index < equation->counter) {
+	// 	equation->getTerm(index).toString();
+	// }
 	index = -1;
 	while (++index < equation->counter) {
 		oneTerm = equation->getTerm(index);
@@ -60,7 +52,6 @@ bool	reducedOk(polynomial *equation) {
 	}
 	equation->solveExponents(0);
 	equation->showReduced();
-	equation->bodmasRule(0);
 	return (true);
 }
 
@@ -70,7 +61,7 @@ int		polynomialDegree(polynomial *equation) {
 	int		polDegree;
 
 	len = -1;
-	polDegree = 0;
+	polDegree = 1;
 	while (++len < equation->counter) {
 		oneTerm = equation->getTerm(len);
 		if (oneTerm.getSide() > 0) {
@@ -101,10 +92,21 @@ int		main(int ac, char **av) {
 		cout << "Error reducing polynomial";
 		return (1);
 	}
-	// cout << "Polynomial degree is " << polynomialDegree(equation) << endl;
-	// if (polynomialDegree(equation) > 2) {
-	// 	cout << "The Polynomial degree is stricly greater than 2, I can't solve." << endl;
-	// 	return (1);1
-	// }
+	equation->bodmasRule(0);
+	if (polynomialDegree(equation) > 2) {
+		cout << "The Polynomial degree is stricly greater than 2, I can't solve." << endl;
+		return (1);
+	}
+	cout << "polynomial expression :: " << polynomialDegree(equation) << endl;
+	if (polynomialDegree(equation) == 1) {
+		cout << "number of terms :: " << equation->counter << endl;
+		if (equation->counter != 2) {
+			cout << "Cannot solve expression" << endl;
+			return (1);
+		}
+		equation->solveExpression();
+		equation->showExpression();
+	}
+	equation->showReduced();
 	return (0);
 }

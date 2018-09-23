@@ -124,14 +124,9 @@ void    polynomial::solveExponents(int start) {
 
 // NB NB NB NBget the last instance of a variable
 void    polynomial::solveByOrder(int start, char check) {
-    // cout << "start : " << start << " end : " << counter << endl;
     if (start >= counter) {
         return ;
     }
-    // cout << "Left hand side : ";
-    // this->terms.at(start - 1).toString();
-    // cout << "Right hand side : ";
-    // this->terms.at(start).toString();
     while (start < counter) {
         if (this->terms.at(start).getOperand() == check) {
             if (this->terms.at(start - 1).addTerm(this->terms.at(start))) {
@@ -144,22 +139,11 @@ void    polynomial::solveByOrder(int start, char check) {
 }
 
 void    polynomial::bodmasRule(int start) {
-    showAll();
     solveExponents(start);
-    cout << "debug 1: " << endl;
-    showAll();
     solveByOrder(start + 1, '/');
-    cout << "debug 2: " << endl;
-    showAll();
     solveByOrder(start + 1, '*');
-    cout << "debug 3: " << endl;
-    showAll();
     solveByOrder(start + 1, '+');
-    cout << "debug 4: " << endl;
-    showAll();
     solveByOrder(start + 1, '-');
-    cout << "Solved right hand side" << endl;
-    showAll();
 }
 
 void    polynomial::showAll() {
@@ -171,3 +155,48 @@ void    polynomial::showAll() {
     }
     cout << "END END END" << endl;
 }
+
+void    polynomial::moveRight(int index) {
+    char    operand;
+
+    operand = this->terms.at(index).getOperand() == '+' ? '-' : '+';
+    this->terms.at(index).setOperand(operand);
+    this->terms.at(index).setSide(1);
+    this->terms.at(index).toString();
+}
+
+void    polynomial::solveExpression() {
+    if (this->terms.at(0).isVar()) {
+        moveRight(1);
+        this->terms.at(1).toString();
+    }
+    else {
+        moveRight(0);
+        this->terms.at(0).toString();
+    }
+}
+
+void    polynomial::showExpression() {
+    // int     index = -1;
+    // bool    changeSide = false;
+
+    cout << "Showing expression : " << endl;
+    showAll();
+    // while (++index < counter) {
+    //     if (this->terms.at(index).getSide() == 1 && !changeSide) {
+    //         cout << " = ";
+    //         changeSide = true;
+    //     }
+    //     cout << this->terms.at(index).getOperand() << " ";
+    //     cout << this->terms.at(index).getConstant();
+    //     if (this->terms.at(index).isVar()) {
+    //         cout << this->terms.at(index).getVariable();
+    //     }
+    //     if (this->terms.at(index).isExp()) {
+    //         cout << "^" << this->terms.at(index).getExponent();
+    //     }
+    //     cout << " ";
+    // }
+    cout << endl;
+}
+

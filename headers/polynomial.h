@@ -9,6 +9,7 @@ class polynomial {
     private:
         vector<term>    terms;
         void            solveByOrder(int start, char check);
+        void            moveRight(int index);
 
     public:
         polynomial(void);
@@ -23,6 +24,8 @@ class polynomial {
         void            showAll();
         void            bodmasRule(int start);
         void            solveExponents(int start);
+        void            solveExpression();
+        void            showExpression();
 };
 
 #endif
