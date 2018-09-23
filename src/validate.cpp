@@ -245,20 +245,20 @@ void	Validate::addexpression(polynomial *equation) {
 		term *termClass = new term(correctStrings[1], correctStrings[0][0], termSide);	
 		equation->addTerm(termClass);
 		index = 2;
-		termClass->toString();
+		// termClass->toString();
 	}
 	else {
 		term *termClass = new term(correctStrings[0], '+', termSide);
 		equation->addTerm(termClass);
 		index = 1;
-		termClass->toString();
+		// termClass->toString();
 	}
 	while (index < ((int)correctStrings.size() - 1)) {
 		if (correctStrings[index][0] != '=') {
 			term *termClass = new term(correctStrings[index + 1], correctStrings[index][0], termSide);
 			equation->addTerm(termClass);
 			index += 2;
-			termClass->toString();
+			// termClass->toString();
 		}
 		else {
 			termSide++;
@@ -266,7 +266,7 @@ void	Validate::addexpression(polynomial *equation) {
 				term *termClass = new term(correctStrings[index + 1], '+', termSide);
 				equation->addTerm(termClass);
 				index += 2;
-				termClass->toString();
+				// termClass->toString();
 			}
 			else {
 				index++;
@@ -276,13 +276,13 @@ void	Validate::addexpression(polynomial *equation) {
 }
 
 bool	Validate::isPolynomialValid(char *poly, polynomial *equation) {
-	int index = -1;
+	// int index = -1;
 
 	splitString(poly);
 	correctSplit();
-	while (++index < (int)correctStrings.size()) {
-		cout << "Index " << index + 1 << " : " << correctStrings[index] << endl; 		
-	}
+	// while (++index < (int)correctStrings.size()) {
+	// 	cout << "Index " << index + 1 << " : " << correctStrings[index] << endl; 		
+	// }
 	if (!checkPolynomialAuthentacity()) {
 		return (false);
 	}

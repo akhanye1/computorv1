@@ -12,25 +12,25 @@ bool	setValue(polynomial *equation, term oneTerm, int index) {
 			equation->changeSide(oneTerm, index);
 			break;
 		}
-		if (oneTerm.isConst() && tempTerm.isConst() &&
-		!oneTerm.isVar() && !tempTerm.isVar() &&
-		(oneTerm.getOperand() == '+' || oneTerm.getOperand() == '-') &&
-		(tempTerm.getOperand() == '+' || tempTerm.getOperand() == '-')) {
-			cout << "Term found " << oneTerm.getConstant() << endl;
-			tempTerm.addConstant(oneTerm, tempTerm);
-			equation->moveLeft(tempTerm, i, index);
-			break ;
-		} /*else if (oneTerm.isVar() && tempTerm.isVar()) {
-			if ((oneTerm.getVariable() == tempTerm.getVariable()) &&
-			(oneTerm.getExponent() == tempTerm.getExponent()) &&
-			(oneTerm.getOperand() == '+' || oneTerm.getOperand() == '-') &&
-			(tempTerm.getOperand() == '+' || tempTerm.getOperand() == '-')) {
-				tempTerm.addVariable(oneTerm, tempTerm);
-				equation->moveLeft(tempTerm, i, index);
-				//equation->move:
-				break ;
-			}
-		}*/
+		// if (oneTerm.isConst() && tempTerm.isConst() &&
+		// !oneTerm.isVar() && !tempTerm.isVar() &&
+		// (oneTerm.getOperand() == '+' || oneTerm.getOperand() == '-') &&
+		// (tempTeerm.getOperand() == '+' || tempTerm.getOperand() == '-')) {
+		// 	cout << "Term found " << oneTerm.getConstant() << endl;
+		// 	tempTerm.addConstant(oneTerm, tempTerm);
+		// 	equation->moveLeft(tempTerm, i, index);
+		// 	break ;
+		// } else if (oneTerm.isVar() && tempTerm.isVar()) {
+		// 	if ((oneTerm.getVariable() == tempTerm.getVariable()) &&
+		// 	(oneTerm.getExponent() == tempTerm.getExponent()) &&
+		// 	(oneTerm.getOperand() == '+' || oneTerm.getOperand() == '-') &&
+		// 	(tempTerm.getOperand() == '+' || tempTerm.getOperand() == '-')) {
+		// 		tempTerm.addVariable(oneTerm, tempTerm);
+		// 		equation->moveLeft(tempTerm, i, index);
+		// 		equation->move:
+		// 		break ;
+		// 	}
+		// }
 	}
 	return (true);
 }
@@ -96,10 +96,10 @@ int		main(int ac, char **av) {
 	else {
 		cout << "Polynomial expression is correct" << endl;
 	}
-	// if (!reducedOk(equation)) {
-	// 	cout << "Error reducing polynomial";
-	// 	return (1);
-	// }
+	if (!reducedOk(equation)) {
+		cout << "Error reducing polynomial";
+		return (1);
+	}
 	// cout << "Polynomial degree is " << polynomialDegree(equation) << endl;
 	// if (polynomialDegree(equation) > 2) {
 	// 	cout << "The Polynomial degree is stricly greater than 2, I can't solve." << endl;

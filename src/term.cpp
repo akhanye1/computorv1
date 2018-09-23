@@ -80,6 +80,10 @@ void    term::fillTerm(string str) {
             this->isExponent = true;
         }
     }
+    if (!this->isConstant) {
+        this->constant = 1;
+        this->isConstant = true;
+    }
 }
 
 term::term(string str, char operand, int termSide) {
