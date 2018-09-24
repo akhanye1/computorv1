@@ -10,6 +10,9 @@ class polynomial {
         vector<term>    terms;
         void            solveByOrder(int start, char check);
         void            moveRight(int index);
+        float           getA();
+        float           getB();
+        float           getC();
 
     public:
         polynomial(void);
@@ -27,6 +30,7 @@ class polynomial {
         void            solveExpression();
         void            showExpression();
         void            addRemaining(int index);
+        void            solveQuadradic();
 };
 
 #endif

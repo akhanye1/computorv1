@@ -73,6 +73,7 @@ int		polynomialDegree(polynomial *equation) {
 
 int		main(int ac, char **av) {
 	polynomial	*equation = new polynomial();
+
 	Validate validation;
 	if (ac != 2) {
 		cout << "Usage: ./computor <polynimial>" << endl;
@@ -103,7 +104,12 @@ int		main(int ac, char **av) {
 		equation->solveExpression();
 	}
 	else if (polynomialDegree(equation) == 2) {
-		
+		if (equation->counter != 3) {
+			cout << "Cannot solve expression" << endl;
+			return (1);
+		}
+		equation->showExpression();
+		equation->solveQuadradic();
 	}
 	return (0);
 }

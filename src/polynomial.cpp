@@ -160,7 +160,6 @@ void    polynomial::moveRight(int index) {
     operand = this->terms.at(index).getOperand() == '+' ? '-' : '+';
     this->terms.at(index).setOperand(operand);
     this->terms.at(index).setSide(1);
-    // this->terms.at(index).toString();
 }
 
 void    polynomial::solveExpression() {
@@ -217,4 +216,76 @@ void    polynomial::addRemaining(int index) {
             return (addRemaining(index));
         }
     }
+}
+
+float   polynomial::getA() {
+    int index = -1;
+    while (++index < 3) {
+        if (this->terms.at(index).isExp() && this->terms.at(index).getExponent() == 2) {
+            return (this->terms.at(index).getCorrectValue());
+        }
+    }
+    return (0);
+}
+
+float   polynomial::getB() {
+    int index = -1;
+    while (++index < 3) {
+        if (this->terms.at(index).isExp() && this->terms.at(index).getExponent() != 2) {
+            return (this->terms.at(index).getCorrectValue());
+        }
+    }
+    return (0);
+}
+
+float   polynomial::getC() {
+    int index = -1;
+    while (++index < 3) {
+        if (!this->terms.at(index).isExp()) {
+            return (this->terms.at(index).getCorrectValue());
+        }
+    }
+    return (0);
+}
+
+float   squareRoot(float goal) {
+    double minus, ans, sub;
+
+	ans = minus = (goal / 2);
+	sub = 1;
+	while (true) {
+		while (ans > 0) {
+			ans = minus * minus;
+			if (ans == goal) {
+				return (minus);
+			}
+			else if (ans < goal) {
+				minus += sub;
+				sub /= 10;
+				if (sub < 0.000000000000001)
+					return (minus);
+			}
+			minus -= sub;
+		}
+	}
+	return (1);
+}
+
+void    polynomial::solveQuadradic() {
+    float a, b, c, sqroot, insqr, sol1, sol2;
+
+    a = b = c = sqroot = 0;
+    a = getA();
+    b = getB();
+    c = getC();
+    cout << "A : " << a << " | B : " << b << " | C : " << c << endl;
+    cout << "4ac = " << (4 * a * c) << endl;
+    cout << "pow b^2 = " << power(b, 2) << endl;
+    insqr = power(b, 2) - (4 * a * c);
+    cout << "In square root : " << insqr << endl;
+    sqroot = squareRoot(insqr);
+    cout << "Square root : " << sqroot << endl;
+    sol1 = ((-1 * b) + sqroot) / (2 * a);
+    sol2 = ((-1 * b) - sqroot) / (2 * a);
+    cout << "Solution 1 : " << sol1 << " | Solution 2 : " << sol2 << endl;
 }

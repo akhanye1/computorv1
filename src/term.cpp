@@ -147,7 +147,7 @@ float   getRealValue(term tempTerm) {
 }
 
 float   getRightValueConstant(term rightValue) {
-    return (-1 * rightValue.getConstant());
+    return (-1 * rightValue.getCorrectValue());
 }
 
 void    term::addConstant(term rightConstant, term leftConstant) {
