@@ -15,6 +15,8 @@ class	Validate {
         void            splitForEqualSign(string str);
         void            splitForOperand(string str);
         void            addexpression(polynomial *equation);
+        static char     oneVar;
+        bool            sameVariables(char *poly);
 
 	public:
         Validate(void);

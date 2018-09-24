@@ -244,7 +244,7 @@ bool    term::addTerm(term addTerm) {
     float temp1, temp2, tempSum;
 
     temp1 = this->constant;
-    temp2 = addTerm.getConstant();
+    temp2 = addTerm.getCorrectValue();
     if (addTerm.getOperand() == '+' || addTerm.getOperand() == '-') {
         if (this->sameAs(addTerm)) {
             tempSum = temp1 + temp2;

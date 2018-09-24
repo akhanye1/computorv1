@@ -2,6 +2,7 @@
 #define POLYNOMIAL_H
 #include <vector>
 #include "term.h"
+#include <unistd.h>
 
 using namespace std;
 

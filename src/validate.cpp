@@ -1,6 +1,8 @@
 
 #include "../computorv.h"
 
+char	Validate::oneVar = ' ';
+
 bool	isOperand(string ch) {
 	return (!ch.compare("+") || !ch.compare("-") || !ch.compare("*") || !ch.compare("/"));
 }
@@ -37,6 +39,8 @@ bool	Validate::checkPolynomialAuthentacity() {
 	if (correctStrings[0][0] == '^')
 		return (false);
 	while (++index < ((int)correctStrings.size() - 1)) {
+		if (correctStrings[index][0] == '^' || correctStrings[index][correctStrings[index].length() - 1] == '^')
+			return (false);
 		if (isOperand(correctStrings[index]) && isOperand(correctStrings[index + 1]))
 			return (false);
 		if (!isOperand(correctStrings[index]) && !isOperand(correctStrings[index + 1])) {
@@ -275,14 +279,37 @@ void	Validate::addexpression(polynomial *equation) {
 	}
 }
 
-bool	Validate::isPolynomialValid(char *poly, polynomial *equation) {
-	// int index = -1;
+bool	Validate::sameVariables(char *poly) {
+	string	expression(poly);
+	int		index;
+	bool	foundFirst;
+	
+	index = -1;
+	foundFirst = false;
+	while (++index < (int)expression.length()) {
+		if (isalpha(expression[index])) {
+			if (!foundFirst) {
+				foundFirst = true;
+				oneVar = toupper(expression[index]);
+			}
+			else if (oneVar != toupper(expression[index])) {
+				return (false);
+			}
+		}
+	}
+	return (foundFirst);
+}
 
+//negative exponents
+//variable that have multiple characters
+//
+
+bool	Validate::isPolynomialValid(char *poly, polynomial *equation) {
+	if (!sameVariables(poly)) {
+		return (false);
+	}
 	splitString(poly);
 	correctSplit();
-	// while (++index < (int)correctStrings.size()) {
-	// 	cout << "Index " << index + 1 << " : " << correctStrings[index] << endl; 		
-	// }
 	if (!checkPolynomialAuthentacity()) {
 		return (false);
 	}
