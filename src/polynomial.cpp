@@ -216,6 +216,9 @@ void    polynomial::addRemaining(int index) {
             return (addRemaining(index));
         }
     }
+    if (index < counter) {
+        return (addRemaining(index + 1));
+    }
 }
 
 float   polynomial::getA() {
@@ -272,20 +275,28 @@ float   squareRoot(float goal) {
 }
 
 void    polynomial::solveQuadradic() {
-    float a, b, c, sqroot, insqr, sol1, sol2;
+    float a, b, c, sqroot, discriminant, sol1, sol2;
 
     a = b = c = sqroot = 0;
     a = getA();
     b = getB();
     c = getC();
-    cout << "A : " << a << " | B : " << b << " | C : " << c << endl;
-    cout << "4ac = " << (4 * a * c) << endl;
-    cout << "pow b^2 = " << power(b, 2) << endl;
-    insqr = power(b, 2) - (4 * a * c);
-    cout << "In square root : " << insqr << endl;
-    sqroot = squareRoot(insqr);
-    cout << "Square root : " << sqroot << endl;
+    discriminant = power(b, 2) - (4 * a * c);
+    sqroot = squareRoot(discriminant);
     sol1 = ((-1 * b) + sqroot) / (2 * a);
     sol2 = ((-1 * b) - sqroot) / (2 * a);
-    cout << "Solution 1 : " << sol1 << " | Solution 2 : " << sol2 << endl;
+    cout << "Discriminant is : " << discriminant << endl;
+    cout << "Discriminat is stricly ";
+    if (discriminant > 0) {
+        cout << "positive ";
+    }
+    else if (discriminant < 0) {
+        cout << "negative ";
+    }
+    else {
+        cout << "zero "; 
+    }
+    cout << "the two solutions are "  << endl;
+    cout << sol1 << endl;
+    cout << sol2 << endl;
 }

@@ -104,6 +104,7 @@ int		main(int ac, char **av) {
 		equation->solveExpression();
 	}
 	else if (polynomialDegree(equation) == 2) {
+		equation->showExpression();
 		if (equation->counter != 3) {
 			cout << "Cannot solve expression" << endl;
 			return (1);
