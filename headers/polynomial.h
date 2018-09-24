@@ -26,6 +26,7 @@ class polynomial {
         void            solveExponents(int start);
         void            solveExpression();
         void            showExpression();
+        void            addRemaining(int index);
 };
 
 #endif

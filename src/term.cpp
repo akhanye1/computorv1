@@ -14,6 +14,25 @@ term::term(void) {
     this->termSide = 0;
 }
 
+term::term(term const & rhs) {
+    *this = rhs;
+}
+
+term    & term::operator=(term const & rhs) {
+    this->constant = rhs.getConstant();
+    this->variable = rhs.getVariable();
+    this->exponent = rhs.getExponent();
+    this->isConstant = rhs.isConst();
+    this->isVariable = rhs.isVar();
+    this->isExponent = rhs.isExp();
+    this->order = rhs.getOrder();
+    this->operand = rhs.getOperand();
+    this->termSide = rhs.getSide();
+    return (*this);
+}
+
+char    term::getOrder() const { return (this->order); }
+
 bool    alphaFound(string str) {
     int index = -1;
 
@@ -174,25 +193,9 @@ bool    term::setOperand(char operand) {
     return (true);
 }
 
-bool    term::isVar() {
-    return (this->isVariable);
-}
-
-bool    term::isConst() {
-    return (this->isConstant);
-}
-
-bool    term::isExp() {
-    return (this->isExponent);
-}
-
-int     term::getExponent() {
-    return (this->exponent);
-}
-
-int     term::getSide() {
-    return (this->termSide);
-}
+bool    term::isVar() const { return (this->isVariable); }
+bool    term::isConst() const { return (this->isConstant); }
+bool    term::isExp() const { return (this->isExponent); }
 
 void    term::toString() {
     cout << "Signage " << this->operand << " ";
@@ -213,17 +216,11 @@ void    term::toString() {
     cout << " Side : (" << this->termSide << ") " << endl;
 }
 
-float   term::getConstant() {
-    return (this->constant);
-}
-
-char    term::getVariable() {
-    return (this->variable);
-}
-
-char    term::getOperand() {
-    return (this->operand);
-}
+float   term::getConstant() const { return (this->constant); }
+char    term::getVariable() const { return (this->variable); }
+char    term::getOperand() const { return (this->operand); }
+int     term::getSide() const { return (this->termSide); }
+int     term::getExponent() const { return (this->exponent); }
 
 bool    term::sameAs(term compareTerm) {
     if (this->isVar() == compareTerm.isVar() &&
@@ -275,15 +272,23 @@ void    term::swapTerm(term addTerm) {
 
     temp1 = this->constant;
     temp2 = getRightValueConstant(addTerm);
+    tempSum = 0;
     if (addTerm.getOperand() == '+' || addTerm.getOperand() == '-') {
         if (this->sameAs(addTerm)) {
             tempSum = temp1 + temp2;
+            this->setConstant(tempSum);
+            return ;
         }
     }
     else {
         constant = (addTerm.getConstant() == '*') ? '/' : '*';
         tempSum = (constant == '*') ? temp1 * temp2 : temp1 / temp2;
+        this->setConstant(tempSum);
+        return ;
     }
-    this->setConstant(tempSum);
+}
+
+float   term::getCorrectValue() const {
+    return (getRealValue(*this));
 }
 

@@ -15,7 +15,6 @@ term        polynomial::getTerm(int index) {
 void        polynomial::changeSide(term tempTerm, int index) {
     char    tempOperand;
 
-    cout << "Temp Term at side 1 >> " << tempTerm.getSide() << endl;
     if (tempTerm.getOperand() == '+' || tempTerm.getOperand() == '-') {
         tempOperand = (tempTerm.getOperand() == '+') ? '-' : '+';
     }
@@ -25,7 +24,6 @@ void        polynomial::changeSide(term tempTerm, int index) {
     tempTerm.setOperand(tempOperand);
     tempTerm.setSide(0);
     this->terms.at(index).replaceTerm(tempTerm);
-    cout << "Temp Term at side 2 >> " << this->terms.at(index).getSide() << " Index " << index << endl;
 }
 
 void        polynomial::moveLeft(term tempTerm, int changeIndex, int removeIndex) {
@@ -162,41 +160,61 @@ void    polynomial::moveRight(int index) {
     operand = this->terms.at(index).getOperand() == '+' ? '-' : '+';
     this->terms.at(index).setOperand(operand);
     this->terms.at(index).setSide(1);
-    this->terms.at(index).toString();
+    // this->terms.at(index).toString();
 }
 
 void    polynomial::solveExpression() {
+    term    varTerm;
+    term    rightTerm;
+    float   tempVal;
+
     if (this->terms.at(0).isVar()) {
+        varTerm = this->terms.at(0);
+        rightTerm = this->terms.at(1);
         moveRight(1);
-        this->terms.at(1).toString();
     }
     else {
+        varTerm = this->terms.at(1);
         moveRight(0);
-        this->terms.at(0).toString();
+        rightTerm = this->terms.at(0);
     }
+    // showExpression();
+    tempVal =  rightTerm.getCorrectValue() / varTerm.getCorrectValue();
+    cout << "The solution is:" << endl;
+    cout << tempVal << endl;
 }
 
 void    polynomial::showExpression() {
-    // int     index = -1;
-    // bool    changeSide = false;
+    int     index = -1;
+    bool    changeSide = false;
 
-    cout << "Showing expression : " << endl;
-    showAll();
-    // while (++index < counter) {
-    //     if (this->terms.at(index).getSide() == 1 && !changeSide) {
-    //         cout << " = ";
-    //         changeSide = true;
-    //     }
-    //     cout << this->terms.at(index).getOperand() << " ";
-    //     cout << this->terms.at(index).getConstant();
-    //     if (this->terms.at(index).isVar()) {
-    //         cout << this->terms.at(index).getVariable();
-    //     }
-    //     if (this->terms.at(index).isExp()) {
-    //         cout << "^" << this->terms.at(index).getExponent();
-    //     }
-    //     cout << " ";
-    // }
+    while (++index < counter) {
+        if (this->terms.at(index).getSide() == 1 && !changeSide) {
+            cout << " = ";
+            changeSide = true;
+        }
+        cout << this->terms.at(index).getOperand() << " ";
+        cout << this->terms.at(index).getConstant();
+        if (this->terms.at(index).isVar()) {
+            cout << this->terms.at(index).getVariable();
+        }
+        if (this->terms.at(index).isExp()) {
+            cout << "^" << this->terms.at(index).getExponent();
+        }
+        cout << " ";
+    }
     cout << endl;
 }
 
+void    polynomial::addRemaining(int index) {
+    int i;
+
+    i = index;
+    while (++i < counter) {
+        if (this->terms.at(index).sameAs(this->terms.at(i))) {
+            this->terms.at(index).addTerm(this->terms.at(i));
+            moveLeft(this->terms.at(index), index, i);
+            return (addRemaining(index));
+        }
+    }
+}

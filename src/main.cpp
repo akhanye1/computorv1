@@ -28,9 +28,6 @@ bool	reducedOk(polynomial *equation) {
 
 	index = -1;
 	equation->simplifyRight();
-	// while (++index < equation->counter) {
-	// 	equation->getTerm(index).toString();
-	// }
 	index = -1;
 	while (++index < equation->counter) {
 		oneTerm = equation->getTerm(index);
@@ -50,8 +47,8 @@ bool	reducedOk(polynomial *equation) {
 		cout << "Max Right is more that 0 >> " << maxRight << endl;
 		return (false);
 	}
-	equation->solveExponents(0);
 	equation->showReduced();
+	equation->solveExponents(0);
 	return (true);
 }
 
@@ -92,21 +89,21 @@ int		main(int ac, char **av) {
 		cout << "Error reducing polynomial";
 		return (1);
 	}
-	equation->bodmasRule(0);
 	if (polynomialDegree(equation) > 2) {
 		cout << "The Polynomial degree is stricly greater than 2, I can't solve." << endl;
 		return (1);
 	}
-	cout << "polynomial expression :: " << polynomialDegree(equation) << endl;
+	equation->bodmasRule(0);
+	equation->addRemaining(0);
 	if (polynomialDegree(equation) == 1) {
-		cout << "number of terms :: " << equation->counter << endl;
 		if (equation->counter != 2) {
 			cout << "Cannot solve expression" << endl;
 			return (1);
 		}
 		equation->solveExpression();
-		equation->showExpression();
 	}
-	equation->showReduced();
+	else if (polynomialDegree(equation) == 2) {
+		
+	}
 	return (0);
 }

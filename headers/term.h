@@ -22,6 +22,8 @@ class term {
         term(int termSide);
         term(string str, char operand, int termSide);
         term(void);
+        term(term const & rhs);
+        term & operator=(term const & rhs);
         bool    setConstant(float constant);
         void    addConstant(term leftConstant, term rightConstant);
         bool    setVariable(char variable);
@@ -31,20 +33,22 @@ class term {
         bool    setOperand(char operand);
         void    setSide(int side);
         void    replaceTerm(term tempTerm);
-        bool    isVar();
-        bool    isConst();
-        bool    isExp();
+        bool    isVar() const;
+        bool    isConst() const;
+        bool    isExp() const;
         void    toString();
-        int     getExponent();
-        int     getSide();
-        float   getConstant();
-        char    getVariable();
-        char    getOperand();
+        int     getExponent() const;
+        int     getSide() const;
+        float   getConstant() const;
+        char    getVariable() const;
+        char    getOperand() const;
+        char    getOrder() const ;
         bool    sameAs(term compareTerm);
         bool    addTerm(term addTerm);
         void    removeVariable();
         void    swapTerm(term rightTerm);
         void    matchTerm(term rhs);
+        float   getCorrectValue() const;
 };
 
 #endif
