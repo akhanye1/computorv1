@@ -56,7 +56,7 @@ void        polynomial::showReduced(void) {
                 cout << this->terms.at(x).getConstant();
             }
         }
-        if (this->terms.at(x).isVar() && this->terms.at(x).getConstant() != 0) {
+        if (this->terms.at(x).isVar()) {
             cout << this->terms.at(x).getVariable();
         } 
         if (this->terms.at(x).isExp()) {
@@ -168,15 +168,16 @@ void    polynomial::solveExpression() {
     float   tempVal;
 
     if (this->terms.at(0).isVar()) {
+        moveRight(1);
         varTerm = this->terms.at(0);
         rightTerm = this->terms.at(1);
-        moveRight(1);
     }
     else {
-        varTerm = this->terms.at(1);
         moveRight(0);
+        varTerm = this->terms.at(1);
         rightTerm = this->terms.at(0);
     }
+    // showExpression();
     tempVal =  rightTerm.getCorrectValue() / varTerm.getCorrectValue();
     cout << "The solution is:" << endl;
     cout << tempVal << endl;
@@ -233,7 +234,7 @@ float   polynomial::getA() {
 float   polynomial::getB() {
     int index = -1;
     while (++index < 3) {
-        if (this->terms.at(index).isExp() && this->terms.at(index).getExponent() != 2) {
+        if (this->terms.at(index).isExp() && this->terms.at(index).isVar() && this->terms.at(index).getExponent() == 1) {
             return (this->terms.at(index).getCorrectValue());
         }
     }
@@ -243,7 +244,7 @@ float   polynomial::getB() {
 float   polynomial::getC() {
     int index = -1;
     while (++index < 3) {
-        if (!this->terms.at(index).isExp()) {
+        if (!this->terms.at(index).isVar()) {
             return (this->terms.at(index).getCorrectValue());
         }
     }
@@ -282,21 +283,10 @@ float   squareRoot(float goal) {
 	return (1);
 }
 
-void    showPositiveDiscriminant(float a, float b, float discriminant) {
+void    showPositiveNegativeDiscriminant(float a, float b, float discriminant, string name) {
     float sol1, sol2, sqroot;
     
-    cout << "Discriminant is strickly positive, the two solutions are" << endl;
-    sqroot = squareRoot(discriminant);
-    sol1 = ((-1 * b) + sqroot) / (2 * a);
-    sol2 = ((-1 * b) - sqroot) / (2 * a);
-    cout << sol1 << endl;
-    cout << sol2 << endl;
-}
-
-void    showNegativeDiscriminant(float a, float b, float discriminant) {
-    float sol1, sol2, sqroot;
-    
-    cout << "Discriminant is strickly negative, the two solutions are" << endl;
+    cout << "Discriminant is strickly negative, the two " << name << " are" << endl;
     sqroot = squareRoot(discriminant);
     sol1 = ((-1 * b) + sqroot) / (2 * a);
     sol2 = ((-1 * b) - sqroot) / (2 * a);
@@ -319,12 +309,14 @@ void    polynomial::solveQuadradic() {
     a = getA();
     b = getB();
     c = getC();
+    // showAll();
+    // cout << "A : " << a << " | B : " << b << " | C : " << c << endl;
     discriminant = power(b, 2) - (4 * a * c);
     if (discriminant > 0) {
-        showPositiveDiscriminant(a, b, discriminant);
+        showPositiveNegativeDiscriminant(a, b, discriminant,"positive");
     }
     else if (discriminant < 0) {
-        showNegativeDiscriminant(a, b, discriminant);
+        showPositiveNegativeDiscriminant(a, b, discriminant,"negative");
     }
     else if (discriminant == 0) {
         showZeroDiscriminant(a, b, discriminant);

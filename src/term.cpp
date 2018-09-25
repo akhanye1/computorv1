@@ -103,6 +103,10 @@ void    term::fillTerm(string str) {
         this->constant = 1;
         this->isConstant = true;
     }
+    if (this->isVariable && !this->isExponent) {
+        this->isExponent = true;
+        this->exponent = 1;
+    }
 }
 
 term::term(string str, char operand, int termSide) {
@@ -270,13 +274,21 @@ void    term::swapTerm(term addTerm) {
     float   temp1, temp2, tempSum;
     char    constant;
 
-    temp1 = this->constant;
+    temp1 = getCorrectValue();
     temp2 = getRightValueConstant(addTerm);
     tempSum = 0;
     if (addTerm.getOperand() == '+' || addTerm.getOperand() == '-') {
         if (this->sameAs(addTerm)) {
             tempSum = temp1 + temp2;
-            this->setConstant(tempSum);
+            if (tempSum < 0) {
+                this->setConstant('-');
+                tempSum = -1 * tempSum;
+                this->setConstant(tempSum);
+            }
+            else {
+                this->setConstant('+');
+                this->setConstant(tempSum);
+            }
             return ;
         }
     }

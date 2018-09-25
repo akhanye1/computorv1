@@ -71,6 +71,8 @@ int		polynomialDegree(polynomial *equation) {
 	return (polDegree);
 }
 
+//fix bug when key in solved expression
+
 int		main(int ac, char **av) {
 	polynomial	*equation = new polynomial();
 
