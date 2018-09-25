@@ -308,8 +308,6 @@ void    polynomial::solveQuadradic() {
     a = getA();
     b = getB();
     c = getC();
-    // showAll();
-    // cout << "A : " << a << " | B : " << b << " | C : " << c << endl;
     discriminant = power(b, 2) - (4 * a * c);
     if (discriminant > 0) {
         showPositiveNegativeDiscriminant(a, b, discriminant,"positive");

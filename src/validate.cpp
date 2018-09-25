@@ -45,7 +45,7 @@ bool	Validate::checkPolynomialAuthentacity() {
 			return (false);
 		if (!isOperand(correctStrings[index]) && !isOperand(correctStrings[index + 1])) {
 			if (correctStrings[index].compare("=") && correctStrings[index + 1].compare("=")) {
-				cout << "failed here (" << correctStrings[index] << ") (" << correctStrings[index + 1] << ")" << endl;
+				cout << "failed here (" << correctStrings[index] << ") (" << correctStrings[index + 1] << ")" << 2endl;
 				return (false);
 			}
 		}

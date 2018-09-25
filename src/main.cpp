@@ -85,9 +85,6 @@ int		main(int ac, char **av) {
 		cout << "Polynomial expression is incorrect" << endl;
 		return (1);
 	}
-	else {
-		cout << "Polynomial expression is correct" << endl;
-	}
 	if (!reducedOk(equation)) {
 		cout << "Error reducing polynomial";
 		return (1);
