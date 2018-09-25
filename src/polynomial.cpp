@@ -260,26 +260,25 @@ float   squareRoot(float goal) {
     }
 	ans = minus = (goal / 2);
 	sub = 1;
-	while (true) {
-		while (ans > 0) {
-			ans = minus * minus;
-			if (ans == goal) {
-				return (minus);
-			}
-			else if (ans < goal) {
-                counter = 11;
-				minus += sub;
-				sub /= 10;
-				if (sub < 0.000000000000001)
-					return (minus);
-			}
-            else if (counter < 0 && sub < 1) {
+    counter = 1;
+    while (ans > 0) {
+        ans = minus * minus;
+        if (ans == goal) {
+            return (minus);
+        }
+        else if (ans < goal) {
+            counter = 11;
+            minus += sub;
+            sub /= 10;
+            if (sub < 0.000000000000001)
                 return (minus);
-            }
-            counter--;
-			minus -= sub;
+        }
+        else if (counter < 0 && sub < 1) {
+            return (minus);
+        }
+        counter--;
+        minus -= sub;
 		}
-	}
 	return (1);
 }
 
