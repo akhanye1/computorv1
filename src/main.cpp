@@ -96,7 +96,8 @@ int		main(int ac, char **av) {
 	equation->bodmasRule(0);
 	equation->addRemaining(0);
 	if (polynomialDegree(equation) == 1) {
-		if (equation->counter != 2) {
+		equation->showAll();
+		if (equation->counter < 1 && equation->counter > 2) {
 			cout << "Cannot solve expression" << endl;
 			return (1);
 		}

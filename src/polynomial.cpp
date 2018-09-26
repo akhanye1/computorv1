@@ -167,6 +167,10 @@ void    polynomial::solveExpression() {
     term    rightTerm;
     float   tempVal;
 
+    if (this->counter == 1) {
+        term *temp = new term("0", '+', 0);
+        this->addTerm(temp);
+    }
     if (this->terms.at(0).isVar()) {
         moveRight(1);
         varTerm = this->terms.at(0);
@@ -177,7 +181,6 @@ void    polynomial::solveExpression() {
         varTerm = this->terms.at(1);
         rightTerm = this->terms.at(0);
     }
-    // showExpression();
     tempVal =  rightTerm.getCorrectValue() / varTerm.getCorrectValue();
     cout << "The solution is:" << endl;
     cout << tempVal << endl;
@@ -319,15 +322,3 @@ void    polynomial::solveQuadradic() {
         showZeroDiscriminant(a, b, discriminant);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
