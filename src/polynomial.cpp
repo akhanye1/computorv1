@@ -361,12 +361,9 @@ void    polynomial::solveSquareRoot() {
 void    polynomial::solveQuadradic() {
     float a, b, c, discriminant;
 
-    cout << "debug 1" << endl;
     a = b = c = 0;
     a = getA();
-    cout << "debug 2" << endl;
     b = getB();
-    cout << "debug 3" << endl;
     c = getC();
     showAll();
     cout << "A : " << a << " B : " << b << " C : " << c << endl;
@@ -382,5 +379,34 @@ void    polynomial::solveQuadradic() {
     }
     else if (discriminant == 0) {
         showZeroDiscriminant(a, b, discriminant);
+    }
+}
+
+void    polynomial::multiplyVariables() {
+    int     index = 0;
+
+    while (++index < counter) {
+        if (this->terms.at(index).getSide() == 0 && this->terms.at(index).isVar()) {
+            if (this->terms.at(index).getOperand() == '*' ||
+            this->terms.at(index).getOperand() == '/') {
+                if (this->terms.at(index - 1).addTerm(this->terms.at(index))) {
+                    moveLeft(this->terms.at(index - 1), index - 1, index);
+                    return (multiplyVariables());
+                }
+            }
+        }
+    }
+    index = 0;
+    while (++index < counter) {
+        if (this->terms.at(index).getSide() == 1 && this->terms.at(index).isVar() &&
+        this->terms.at(index - 1).getSide() == 1) {
+            if (this->terms.at(index).getOperand() == '*' ||
+            this->terms.at(index).getOperand() == '/') {
+                if (this->terms.at(index - 1).addTerm(this->terms.at(index))) {
+                    moveLeft(this->terms.at(index - 1), index - 1, index);
+                    return (multiplyVariables());
+                }
+            }
+        }
     }
 }

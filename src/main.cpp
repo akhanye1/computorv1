@@ -83,6 +83,7 @@ int		main(int ac, char **av) {
 		cout << "Polynomial expression is incorrect" << endl;
 		return (1);
 	}
+	equation->multiplyVariables();
 	if (!reducedOk(equation)) {
 		cout << "Error reducing polynomial";
 		return (1);

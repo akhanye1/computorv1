@@ -257,6 +257,11 @@ bool    term::addTerm(term addTerm) {
         }
     }
     else {
+        if (this->isVariable && addTerm.isVar()) {
+            if (this->exponent != addTerm.getExponent()) {
+                return (false);
+            }
+        }
         tempSum = (addTerm.getOperand() == '*') ? temp1 * temp2 : temp1 / temp2;
         this->setConstant(tempSum);
         matchTerm(addTerm);

@@ -33,6 +33,7 @@ class polynomial {
         void            showExpression();
         void            addRemaining(int index);
         void            solveQuadradic();
+        void            multiplyVariables();
 };
 
 #endif
