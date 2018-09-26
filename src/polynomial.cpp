@@ -142,6 +142,7 @@ void    polynomial::bodmasRule(int start) {
     solveByOrder(start + 1, '*');
     solveByOrder(start + 1, '+');
     solveByOrder(start + 1, '-');
+    solveExponents(start);
 }
 
 void    polynomial::showAll() {
@@ -162,48 +163,78 @@ void    polynomial::moveRight(int index) {
     this->terms.at(index).setSide(1);
 }
 
+term    *getEmptyTerm() {
+    term *temp = new term("0", '+', 0);
+    return (temp);    
+}
+
 void    polynomial::solveExpression() {
     term    varTerm;
     term    rightTerm;
     float   tempVal;
 
     if (this->counter == 1) {
-        term *temp = new term("0", '+', 0);
-        this->addTerm(temp);
+        this->addTerm(getEmptyTerm());
     }
     if (this->terms.at(0).isVar()) {
         moveRight(1);
         varTerm = this->terms.at(0);
         rightTerm = this->terms.at(1);
     }
-    else {
+    else if (this->terms.at(1).isVar()) {
         moveRight(0);
         varTerm = this->terms.at(1);
         rightTerm = this->terms.at(0);
+    }
+    else {
+        if (this->terms.at(0).getConstant() == this->terms.at(1).getConstant()) {
+            cout << "All the real numbers are solutions" << endl;
+            return ;
+        }
+        else if (this->terms.at(1).getConstant() == 0) {
+            cout << "Cannot solve expression" << endl;
+            return ;
+        }
     }
     tempVal =  rightTerm.getCorrectValue() / varTerm.getCorrectValue();
     cout << "The solution is:" << endl;
     cout << tempVal << endl;
 }
 
+void    printTerm(term printTerm) {
+    cout << printTerm.getOperand() << " ";
+    cout << printTerm.getConstant();
+    if (printTerm.isVar()) {
+        cout << printTerm.getVariable();
+    }
+    if (printTerm.isExp()) {
+        cout << "^" << printTerm.getExponent();
+    }
+    cout << " ";
+}
+
 void    polynomial::showExpression() {
     int     index = -1;
-    bool    changeSide = false;
+    int     foundRight = false;
 
     while (++index < counter) {
-        if (this->terms.at(index).getSide() == 1 && !changeSide) {
-            cout << " = ";
-            changeSide = true;
+        if (this->terms.at(index).getSide() == 0) {
+            printTerm(this->terms.at(index));
         }
-        cout << this->terms.at(index).getOperand() << " ";
-        cout << this->terms.at(index).getConstant();
-        if (this->terms.at(index).isVar()) {
-            cout << this->terms.at(index).getVariable();
+        else {
+            foundRight = true;
         }
-        if (this->terms.at(index).isExp()) {
-            cout << "^" << this->terms.at(index).getExponent();
+    }
+    if (!foundRight) {
+        cout << " = 0" << endl;
+        return ;
+    }
+    cout << " = ";
+    index = -1;
+    while (++index < counter) {
+        if (this->terms.at(index).getSide() == 1) {
+            printTerm(this->terms.at(index));
         }
-        cout << " ";
     }
     cout << endl;
 }
@@ -226,7 +257,7 @@ void    polynomial::addRemaining(int index) {
 
 float   polynomial::getA() {
     int index = -1;
-    while (++index < 3) {
+    while (++index < counter) {
         if (this->terms.at(index).isExp() && this->terms.at(index).getExponent() == 2) {
             return (this->terms.at(index).getCorrectValue());
         }
@@ -236,7 +267,7 @@ float   polynomial::getA() {
 
 float   polynomial::getB() {
     int index = -1;
-    while (++index < 3) {
+    while (++index < counter) {
         if (this->terms.at(index).isExp() && this->terms.at(index).isVar() && this->terms.at(index).getExponent() == 1) {
             return (this->terms.at(index).getCorrectValue());
         }
@@ -246,7 +277,7 @@ float   polynomial::getB() {
 
 float   polynomial::getC() {
     int index = -1;
-    while (++index < 3) {
+    while (++index < counter) {
         if (!this->terms.at(index).isVar()) {
             return (this->terms.at(index).getCorrectValue());
         }
@@ -304,13 +335,44 @@ void    showZeroDiscriminant(float a, float b, float discriminant) {
     cout << sol1 << endl;
 }
 
+void    polynomial::solveSquareRoot() {
+    term    varTerm, rightTerm;
+    float   tempVal;
+    if (counter == 1) {
+        this->addTerm(getEmptyTerm());
+    }
+    if (this->terms.at(0).isVar()) {
+        moveRight(1);
+        varTerm = this->terms.at(0);
+        rightTerm = this->terms.at(1);
+    }
+    else {
+        moveRight(0);
+        varTerm = this->terms.at(1);
+        rightTerm = this->terms.at(0);
+    }
+    tempVal = rightTerm.getConstant() / varTerm.getConstant();
+    showExpression();
+    cout << "The solution is:" << endl;
+    cout << "+-" << squareRoot(tempVal) << endl;
+    return ;
+}
+
 void    polynomial::solveQuadradic() {
     float a, b, c, discriminant;
 
+    cout << "debug 1" << endl;
     a = b = c = 0;
     a = getA();
+    cout << "debug 2" << endl;
     b = getB();
+    cout << "debug 3" << endl;
     c = getC();
+    showAll();
+    cout << "A : " << a << " B : " << b << " C : " << c << endl;
+    if (b == 0 && a > 0) {
+        return (solveSquareRoot());
+    }
     discriminant = power(b, 2) - (4 * a * c);
     if (discriminant > 0) {
         showPositiveNegativeDiscriminant(a, b, discriminant,"positive");

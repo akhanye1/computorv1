@@ -14,6 +14,7 @@ class polynomial {
         float           getA();
         float           getB();
         float           getC();
+        void            solveSquareRoot();
 
     public:
         polynomial(void);

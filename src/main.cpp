@@ -71,8 +71,6 @@ int		polynomialDegree(polynomial *equation) {
 	return (polDegree);
 }
 
-//fix bug when key in solved expression
-
 int		main(int ac, char **av) {
 	polynomial	*equation = new polynomial();
 
@@ -89,13 +87,15 @@ int		main(int ac, char **av) {
 		cout << "Error reducing polynomial";
 		return (1);
 	}
+	equation->bodmasRule(0);
+	equation->addRemaining(0);
+	equation->showExpression();
 	if (polynomialDegree(equation) > 2) {
 		cout << "The Polynomial degree is stricly greater than 2, I can't solve." << endl;
 		return (1);
 	}
-	equation->bodmasRule(0);
-	equation->addRemaining(0);
 	if (polynomialDegree(equation) == 1) {
+		cout << "degree 1" << endl;
 		equation->showAll();
 		if (equation->counter < 1 && equation->counter > 2) {
 			cout << "Cannot solve expression" << endl;
@@ -104,7 +104,9 @@ int		main(int ac, char **av) {
 		equation->solveExpression();
 	}
 	else if (polynomialDegree(equation) == 2) {
-		if (equation->counter != 3) {
+		cout << "degree 2" << endl;
+		equation->showAll();
+		if (equation->counter > 3) {
 			cout << "Cannot solve expression" << endl;
 			return (1);
 		}
