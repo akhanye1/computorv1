@@ -286,12 +286,12 @@ void    term::swapTerm(term addTerm) {
         if (this->sameAs(addTerm)) {
             tempSum = temp1 + temp2;
             if (tempSum < 0) {
-                this->setConstant('-');
+                this->setOperand('-');
                 tempSum = -1 * tempSum;
                 this->setConstant(tempSum);
             }
             else {
-                this->setConstant('+');
+                this->setOperand('+');
                 this->setConstant(tempSum);
             }
             return ;

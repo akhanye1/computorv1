@@ -1,11 +1,20 @@
 #include "../computorv.h"
 
 int polynomial::counter = 0;
+bool polynomial::debug = false;
 
 bool    polynomial::addTerm(term *termVal) {
     this->terms.push_back(*termVal);
     polynomial::counter++;
     return (true);
+}
+
+void    polynomial::debugOn() {
+    debug = true;
+}
+
+bool    polynomial::isDebug() {
+    return (debug);
 }
 
 term        polynomial::getTerm(int index) {
@@ -79,6 +88,7 @@ void    polynomial::simplifyRight() {
         return;
     }
     bodmasRule(index);
+    showExpression("After reducing right side");
 }
 
 float   power(float number, int exponent) {
@@ -120,7 +130,6 @@ void    polynomial::solveExponents(int start) {
     }
 }
 
-// NB NB NB NBget the last instance of a variable
 void    polynomial::solveByOrder(int start, char check) {
     if (start >= counter) {
         return ;
@@ -196,7 +205,9 @@ void    polynomial::solveExpression() {
             return ;
         }
     }
+    showExpression("move to right side");
     tempVal =  rightTerm.getCorrectValue() / varTerm.getCorrectValue();
+    showExpression("Divide by both sides");
     cout << "The solution is:" << endl;
     cout << tempVal << endl;
 }
@@ -213,10 +224,13 @@ void    printTerm(term printTerm) {
     cout << " ";
 }
 
-void    polynomial::showExpression() {
+void    polynomial::showExpression(string explainLine) {
     int     index = -1;
     int     foundRight = false;
 
+    if (!debug) {
+        return ;
+    }
     while (++index < counter) {
         if (this->terms.at(index).getSide() == 0) {
             printTerm(this->terms.at(index));
@@ -226,7 +240,13 @@ void    polynomial::showExpression() {
         }
     }
     if (!foundRight) {
-        cout << " = 0" << endl;
+        cout << " = 0";
+        if (debug) {
+            cout << "\t" << explainLine << endl;
+        }
+        else {
+            cout << endl;
+        }
         return ;
     }
     cout << " = ";
@@ -236,7 +256,12 @@ void    polynomial::showExpression() {
             printTerm(this->terms.at(index));
         }
     }
-    cout << endl;
+    if (debug) {
+        cout << "\t" << explainLine << endl;
+    }
+    else {
+        cout << endl;
+    }
 }
 
 void    polynomial::addRemaining(int index) {
@@ -351,8 +376,9 @@ void    polynomial::solveSquareRoot() {
         varTerm = this->terms.at(1);
         rightTerm = this->terms.at(0);
     }
+    showExpression("move constant to right hand side");    
     tempVal = rightTerm.getConstant() / varTerm.getConstant();
-    showExpression();
+    showExpression("Divide by both sides");
     cout << "The solution is:" << endl;
     cout << "+-" << squareRoot(tempVal) << endl;
     return ;
@@ -365,8 +391,6 @@ void    polynomial::solveQuadradic() {
     a = getA();
     b = getB();
     c = getC();
-    showAll();
-    cout << "A : " << a << " B : " << b << " C : " << c << endl;
     if (b == 0 && a > 0) {
         return (solveSquareRoot());
     }
@@ -409,4 +433,5 @@ void    polynomial::multiplyVariables() {
             }
         }
     }
+    showExpression("Multipliying variables with constants");
 }

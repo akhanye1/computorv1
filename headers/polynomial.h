@@ -15,6 +15,7 @@ class polynomial {
         float           getB();
         float           getC();
         void            solveSquareRoot();
+        static bool     debug;
 
     public:
         polynomial(void);
@@ -30,10 +31,12 @@ class polynomial {
         void            bodmasRule(int start);
         void            solveExponents(int start);
         void            solveExpression();
-        void            showExpression();
+        void            showExpression(string explainLine);
         void            addRemaining(int index);
         void            solveQuadradic();
         void            multiplyVariables();
+        void            debugOn();
+        bool            isDebug();
 };
 
 #endif
