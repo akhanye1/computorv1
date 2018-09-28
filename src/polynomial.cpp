@@ -178,22 +178,23 @@ term    *getEmptyTerm() {
 }
 
 void    polynomial::solveExpression() {
-    term    varTerm;
-    term    rightTerm;
+    term    *varTerm;
+    term    *rightTerm;
     float   tempVal;
 
+    rightTerm = varTerm = NULL;
     if (this->counter == 1) {
         this->addTerm(getEmptyTerm());
     }
     if (this->terms.at(0).isVar()) {
         moveRight(1);
-        varTerm = this->terms.at(0);
-        rightTerm = this->terms.at(1);
+        varTerm = &this->terms.at(0);
+        rightTerm = &this->terms.at(1);
     }
     else if (this->terms.at(1).isVar()) {
         moveRight(0);
-        varTerm = this->terms.at(1);
-        rightTerm = this->terms.at(0);
+        varTerm = &this->terms.at(1);
+        rightTerm = &this->terms.at(0);
     }
     else {
         if (this->terms.at(0).getConstant() == this->terms.at(1).getConstant()) {
@@ -205,9 +206,18 @@ void    polynomial::solveExpression() {
             return ;
         }
     }
-    showExpression("move to right side");
-    tempVal =  rightTerm.getCorrectValue() / varTerm.getCorrectValue();
-    showExpression("Divide by both sides");
+    showExpression("move to right side");    
+    tempVal = rightTerm->getCorrectValue() / varTerm->getCorrectValue();
+    varTerm->setConstant(varTerm->getCorrectValue()/ varTerm->getCorrectValue());
+    varTerm->setOperand('+');
+    rightTerm->setConstant(tempVal);
+    if (rightTerm->getConstant() >= 0) {
+        rightTerm->setOperand('+');
+    }
+    else {
+        rightTerm->setOperand('-');
+    }
+    showExpression("Divide both sides");    
     cout << "The solution is:" << endl;
     cout << tempVal << endl;
 }
@@ -361,24 +371,35 @@ void    showZeroDiscriminant(float a, float b, float discriminant) {
 }
 
 void    polynomial::solveSquareRoot() {
-    term    varTerm, rightTerm;
+    term    *varTerm, *rightTerm;
     float   tempVal;
+
+    varTerm = rightTerm = NULL;
     if (counter == 1) {
         this->addTerm(getEmptyTerm());
     }
     if (this->terms.at(0).isVar()) {
         moveRight(1);
-        varTerm = this->terms.at(0);
-        rightTerm = this->terms.at(1);
+        varTerm = &this->terms.at(0);
+        rightTerm = &this->terms.at(1);
     }
     else {
         moveRight(0);
-        varTerm = this->terms.at(1);
-        rightTerm = this->terms.at(0);
+        varTerm = &this->terms.at(1);
+        rightTerm = &this->terms.at(0);
     }
     showExpression("move constant to right hand side");    
-    tempVal = rightTerm.getConstant() / varTerm.getConstant();
-    showExpression("Divide by both sides");
+    tempVal = rightTerm->getCorrectValue() / varTerm->getCorrectValue();
+    varTerm->setConstant(varTerm->getCorrectValue()/ varTerm->getCorrectValue());
+    varTerm->setOperand('+');
+    rightTerm->setConstant(tempVal);
+    if (rightTerm->getConstant() >= 0) {
+        rightTerm->setOperand('+');
+    }
+    else {
+        rightTerm->setOperand('-');
+    }
+    showExpression("Divide both sides");
     cout << "The solution is:" << endl;
     cout << "+-" << squareRoot(tempVal) << endl;
     return ;
