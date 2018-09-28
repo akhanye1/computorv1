@@ -113,7 +113,6 @@ int		main(int ac, char **av) {
 	}
 	equation->bodmasRule(0);
 	equation->addRemaining(0);
-	// equation->showExpression();
 	if (polynomialDegree(equation) > 2) {
 		cout << "The Polynomial degree is stricly greater than 2, I can't solve." << endl;
 		return (1);
