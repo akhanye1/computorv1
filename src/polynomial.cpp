@@ -205,6 +205,10 @@ void    polynomial::solveExpression() {
             cout << "Cannot solve expression" << endl;
             return ;
         }
+        else {
+            cout << "Error solving expression" << endl;
+            return ;
+        }
     }
     showExpression("move to right side");    
     tempVal = rightTerm->getCorrectValue() / varTerm->getCorrectValue();
